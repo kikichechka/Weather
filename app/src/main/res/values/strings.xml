@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">Weather</string>
+    <string name="app_name">My Weather</string>
+    <string name="temperature_label">Температура</string>
+    <string name="feels_like_label">Ощущается как</string>
+    <string name="russian_list_cities">Города России</string>
+    <string name="world_list_cities">Города мира</string>
+    <string name="menu_list_cities">Список городов</string>
+    <string name="menu_world_map">Карта мира</string>
+    <string name="state_sunny">Солнечно</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
