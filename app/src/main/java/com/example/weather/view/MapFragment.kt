@@ -9,18 +9,27 @@ import com.example.weather.databinding.FragmentMapBinding
 
 
 class MapFragment : Fragment() {
-    private lateinit var binding: FragmentMapBinding
+    private var _binding: FragmentMapBinding? = null
+    private val binding: FragmentMapBinding
+        get() {
+            return _binding!!
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMapBinding.inflate(inflater, container, false)
+        _binding = FragmentMapBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     companion object {
         @JvmStatic
         fun newInstance() = MapFragment()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

@@ -9,19 +9,28 @@ import com.example.weather.databinding.FragmentListCitiesBinding
 
 
 class ListCitiesFragment : Fragment() {
-    private lateinit var binding: FragmentListCitiesBinding
+    private var _binding: FragmentListCitiesBinding? = null
+    private val binding: FragmentListCitiesBinding
+        get() {
+            return _binding!!
+        }
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentListCitiesBinding.inflate(inflater, container, false)
+        _binding = FragmentListCitiesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     companion object {
         @JvmStatic
         fun newInstance() = ListCitiesFragment()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
