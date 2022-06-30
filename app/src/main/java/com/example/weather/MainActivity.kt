@@ -22,9 +22,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
+            val bundle = Bundle()
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.activity_main_container, DetailsWeatherFragment.newInstance())
+                .replace(R.id.activity_main_container, DetailsWeatherFragment.newInstance(bundle))
                 .commit()
         }
     }

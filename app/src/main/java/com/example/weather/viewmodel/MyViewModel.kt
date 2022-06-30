@@ -12,15 +12,26 @@ class MyViewModel(
 ) : ViewModel() {
 
     fun getFavoriteCityLiveData() = favoriteCityLiveData
-    fun getListCitiesLiveData() = listCitiesLiveData
 
     fun updateFavoriteCityLiveData() {
         favoriteCityLiveData.value = AppStateForFavoriteCity.Loading
         Thread {
             sleep(3000L)
-            favoriteCityLiveData.postValue(AppStateForFavoriteCity.Ok(repo.getWeather()))
+            favoriteCityLiveData.postValue(AppStateForFavoriteCity.Luck(repo.getWeather()))
         }.start()
 
+    }
+
+
+    fun getListCitiesLiveData() = listCitiesLiveData
+    fun getRussianCities() = getListWeather(true)
+    fun getWorldCities() = getListWeather(false)
+
+    private fun getListWeather(russian: Boolean) {
+        Thread {
+            val list = if (russian) repo.getRussianCitiesList() else repo.getWorldCitiesList()
+            listCitiesLiveData.postValue(AppStateForListCities.Luck(list))
+        }.start()
     }
 
 }

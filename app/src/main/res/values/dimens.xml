@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="size_city_name_details">55sp</dimen>
+    <dimen name="size_city_name_details">40sp</dimen>
     <dimen name="temperature_value_text_size">45sp</dimen>
     <dimen name="feels_like_text_size">20sp</dimen>
     <dimen name="margin_5_dp">5dp</dimen>
