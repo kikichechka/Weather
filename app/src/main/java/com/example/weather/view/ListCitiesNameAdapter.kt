@@ -33,14 +33,14 @@ class ListCitiesNameAdapter(
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(weather: Weather) {
-            val binding = FragmentListCityItemBinding.bind(itemView)
+            FragmentListCityItemBinding.bind(itemView).apply {
+                itemCityName.text = weather.city.nameCity
+                itemCityName.setOnClickListener { onItemListClickListener.onItemClick(weather) }
 
-            binding.itemCityName.text = weather.city.nameCity
-            binding.itemCityName.setOnClickListener { onItemListClickListener.onItemClick(weather) }
-
-            if (weather.like) {
-                binding.likeInItemNote.background =
-                    ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_star)
+                if (weather.like) {
+                    likeInItemNote.background =
+                        ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_star)
+                }
             }
         }
     }

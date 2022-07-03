@@ -30,7 +30,7 @@ class ListCitiesFragment : Fragment(), OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentListCitiesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -42,22 +42,26 @@ class ListCitiesFragment : Fragment(), OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MyViewModel::class.java)
-        viewModel.getListCitiesLiveData().observe(viewLifecycleOwner,
-            { AppStateForListCities -> showListCitiesName(AppStateForListCities) })
+        viewModel = ViewModelProvider(this).get(MyViewModel::class.java).also {
+            it.getListCitiesLiveData().observe(viewLifecycleOwner,
+                { AppStateForListCities -> showListCitiesName(AppStateForListCities) })
+        }
         spotList(isRussian)
 
-        binding.recyclerviewListCities.adapter = adapter
-        binding.recyclerviewListCities.layoutManager = LinearLayoutManager(requireContext())
+        with(binding) {
+            recyclerviewListCities.adapter = adapter
+            recyclerviewListCities.layoutManager = LinearLayoutManager(requireContext())
 
-        binding.buttonRussianListCities.setOnClickListener {
-            isRussian = true
-            spotList(isRussian)
+            buttonRussianListCities.setOnClickListener {
+                isRussian = true
+                spotList(isRussian)
+            }
+            buttonWorldListCities.setOnClickListener {
+                isRussian = false
+                spotList(isRussian)
+            }
         }
-        binding.buttonWorldListCities.setOnClickListener {
-            isRussian = false
-            spotList(isRussian)
-        }
+
     }
 
     private fun spotList(russian: Boolean) {
