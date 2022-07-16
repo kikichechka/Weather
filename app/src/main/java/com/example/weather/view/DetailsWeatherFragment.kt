@@ -93,10 +93,9 @@ class DetailsWeatherFragment : Fragment() {
             }
             is AppStateForFavoriteCity.Luck -> {
 
-                var newData = data
                 val handler = Handler(Looper.getMainLooper())
                 val uri =
-                    URL("https://api.weather.yandex.ru/v2/informers?lat=${newData.weather.city.lat}&lon=${newData.weather.city.lon}")
+                    URL("https://api.weather.yandex.ru/v2/informers?lat=${data.weather.city.lat}&lon=${data.weather.city.lon}")
                 val myConnection = uri.openConnection() as HttpsURLConnection
                 myConnection.addRequestProperty(KEY_API, KEY_VALUE)
 
@@ -104,7 +103,7 @@ class DetailsWeatherFragment : Fragment() {
                     val reader = BufferedReader(InputStreamReader(myConnection.inputStream))
                     val weatherDTO = Gson().fromJson(getLines(reader), WeatherDTO::class.java)
 
-                    newData.weather.apply {
+                    data.weather.apply {
                         feelsLike = weatherDTO.fact.feelsLike
                         temperature = weatherDTO.fact.temp
                     }
@@ -112,19 +111,19 @@ class DetailsWeatherFragment : Fragment() {
                     handler.post {
                         binding.run {
                             progressDetails.visibility = View.GONE
-                            cityNameDetails.text = newData.weather.city.name
+                            cityNameDetails.text = data.weather.city.name
                             cityCoordinatesDetails.text =
-                                "${newData.weather.city.lat} ${newData.weather.city.lon}"
-                            if (newData.weather.temperature > 0) {
-                                temperatureValue.text = "$equal ${newData.weather.temperature}"
+                                "${data.weather.city.lat} ${data.weather.city.lon}"
+                            if (data.weather.temperature > 0) {
+                                temperatureValue.text = "$equal ${data.weather.temperature}"
                             } else {
-                                temperatureValue.text = "${newData.weather.temperature}"
+                                temperatureValue.text = "${data.weather.temperature}"
                             }
 
-                            if (newData.weather.feelsLike > 0) {
-                                feelsLikeValue.text = "$equal ${newData.weather.feelsLike}"
+                            if (data.weather.feelsLike > 0) {
+                                feelsLikeValue.text = "$equal ${data.weather.feelsLike}"
                             } else {
-                                feelsLikeValue.text = "${newData.weather.feelsLike}"
+                                feelsLikeValue.text = "${data.weather.feelsLike}"
                             }
                         }
                     }

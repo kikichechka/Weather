@@ -1,7 +1,6 @@
 package com.example.weather.utils
 
 import java.io.BufferedReader
-import java.util.stream.Collector
 import java.util.stream.Collectors
 
 const val KEY_BUNDLE_CITY_WEATHER = "bundle"
