@@ -34,7 +34,7 @@ class ListCitiesNameAdapter(
 
         fun bind(weather: Weather) {
             FragmentListCityItemBinding.bind(itemView).apply {
-                itemCityName.text = weather.city.nameCity
+                itemCityName.text = weather.city.name
                 itemCityName.setOnClickListener { onItemListClickListener.onItemClick(weather) }
 
                 if (weather.like) {

@@ -1,17 +1,17 @@
-package com.example.weather.model
+package com.example.weather.model.dto
 
 
 import com.google.gson.annotations.SerializedName
 
 data class WeatherDTO(
     @SerializedName("fact")
-    val fact: Fact?,
+    val fact: Fact,
     @SerializedName("forecast")
-    val forecast: Forecast?,
+    val forecast: Forecast,
     @SerializedName("info")
-    val info: Info?,
+    val info: Info,
     @SerializedName("now")
-    val now: Int?,
+    val now: Int,
     @SerializedName("now_dt")
-    val nowDt: String?
+    val nowDt: String
 )

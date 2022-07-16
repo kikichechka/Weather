@@ -13,11 +13,11 @@ import com.example.weather.databinding.FragmentListCitiesBinding
 import com.example.weather.model.Weather
 import com.example.weather.utils.KEY_BUNDLE_CITY_WEATHER
 import com.example.weather.viewmodel.AppStateForListCities
-import com.example.weather.viewmodel.MyViewModel
+import com.example.weather.viewmodel.ListViewModel
 
 
 class ListCitiesFragment : Fragment(), OnClickListener {
-    private lateinit var viewModel: MyViewModel
+    private lateinit var viewModel: ListViewModel
     private val adapter = ListCitiesNameAdapter(this)
     private var isRussian = true
     private var _binding: FragmentListCitiesBinding? = null
@@ -42,7 +42,7 @@ class ListCitiesFragment : Fragment(), OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MyViewModel::class.java).also {
+        viewModel = ViewModelProvider(this).get(ListViewModel::class.java).also {
             it.getListCitiesLiveData().observe(viewLifecycleOwner,
                 { AppStateForListCities -> showListCitiesName(AppStateForListCities) })
         }

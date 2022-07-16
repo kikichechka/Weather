@@ -1,4 +1,4 @@
-package com.example.weather.model
+package com.example.weather.model.dto
 
 
 import com.google.gson.annotations.SerializedName
@@ -9,7 +9,7 @@ data class Fact(
     @SerializedName("daytime")
     val daytime: String?,
     @SerializedName("feels_like")
-    val feelsLike: Int?,
+    val feelsLike: Int,
     @SerializedName("humidity")
     val humidity: Int?,
     @SerializedName("icon")
@@ -25,11 +25,11 @@ data class Fact(
     @SerializedName("season")
     val season: String?,
     @SerializedName("temp")
-    val temp: Int?,
+    val temp: Int,
     @SerializedName("wind_dir")
     val windDir: String?,
     @SerializedName("wind_gust")
-    val windGust: Double?,
+    val windGust: Double,
     @SerializedName("wind_speed")
     val windSpeed: Double?
 )

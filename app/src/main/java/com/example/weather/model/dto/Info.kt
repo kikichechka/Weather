@@ -1,13 +1,13 @@
-package com.example.weather.model
+package com.example.weather.model.dto
 
 
 import com.google.gson.annotations.SerializedName
 
 data class Info(
     @SerializedName("lat")
-    val lat: Double?,
+    val lat: Double,
     @SerializedName("lon")
-    val lon: Double?,
+    val lon: Double,
     @SerializedName("url")
-    val url: String?
+    val url: String
 )

@@ -1,4 +1,4 @@
-package com.example.weather.model
+package com.example.weather.model.dto
 
 
 import com.google.gson.annotations.SerializedName
@@ -37,7 +37,7 @@ data class Part(
     @SerializedName("wind_dir")
     val windDir: String?,
     @SerializedName("wind_gust")
-    val windGust: Int?,
+    val windGust: Double,
     @SerializedName("wind_speed")
     val windSpeed: Double?
 )
