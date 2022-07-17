@@ -1,34 +1,31 @@
 package com.example.weather.view
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.weather.R
 import com.example.weather.databinding.FragmentDetailsWeatherBinding
 import com.example.weather.model.Weather
 import com.example.weather.model.dto.WeatherDTO
-import com.example.weather.utils.KEY_API
-import com.example.weather.utils.KEY_BUNDLE_CITY_WEATHER
-import com.example.weather.utils.KEY_VALUE
-import com.example.weather.utils.getLines
+import com.example.weather.model.service.ServiceForDetailsWeather
+import com.example.weather.utils.*
 import com.example.weather.viewmodel.AppStateForFavoriteCity
 import com.example.weather.viewmodel.DetailsViewModel
-import com.google.gson.Gson
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.URL
-import javax.net.ssl.HttpsURLConnection as HttpsURLConnection
 
 
 class DetailsWeatherFragment : Fragment() {
     private lateinit var binding: FragmentDetailsWeatherBinding
     private lateinit var viewModel: DetailsViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -93,41 +90,45 @@ class DetailsWeatherFragment : Fragment() {
             }
             is AppStateForFavoriteCity.Luck -> {
 
-                val handler = Handler(Looper.getMainLooper())
-                val uri =
-                    URL("https://api.weather.yandex.ru/v2/informers?lat=${data.weather.city.lat}&lon=${data.weather.city.lon}")
-                val myConnection = uri.openConnection() as HttpsURLConnection
-                myConnection.addRequestProperty(KEY_API, KEY_VALUE)
+                LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
+                    object : BroadcastReceiver() {
+                        override fun onReceive(context: Context?, intent: Intent?) {
+                            intent?.let {
+                                it.getParcelableExtra<WeatherDTO>(
+                                    KEY_WEATHER_DTO_FOR_SERVICE_FOR_DETAILS
+                                )?.let { weatherDTO ->
+                                    binding.run {
+                                        progressDetails.visibility = View.GONE
+                                        cityNameDetails.text = data.weather.city.name
+                                        cityCoordinatesDetails.text =
+                                            "${data.weather.city.lat} ${data.weather.city.lon}"
+                                        if (data.weather.temperature > 0) {
+                                            temperatureValue.text = "$equal ${weatherDTO.fact.temp}"
+                                        } else {
+                                            temperatureValue.text = "${weatherDTO.fact.temp}"
+                                        }
 
-                Thread {
-                    val reader = BufferedReader(InputStreamReader(myConnection.inputStream))
-                    val weatherDTO = Gson().fromJson(getLines(reader), WeatherDTO::class.java)
+                                        if (data.weather.feelsLike > 0) {
+                                            feelsLikeValue.text =
+                                                "$equal ${weatherDTO.fact.feelsLike}"
+                                        } else {
+                                            feelsLikeValue.text = "${weatherDTO.fact.feelsLike}"
+                                        }
+                                    }
 
-                    data.weather.apply {
-                        feelsLike = weatherDTO.fact.feelsLike
-                        temperature = weatherDTO.fact.temp
-                    }
-
-                    handler.post {
-                        binding.run {
-                            progressDetails.visibility = View.GONE
-                            cityNameDetails.text = data.weather.city.name
-                            cityCoordinatesDetails.text =
-                                "${data.weather.city.lat} ${data.weather.city.lon}"
-                            if (data.weather.temperature > 0) {
-                                temperatureValue.text = "$equal ${data.weather.temperature}"
-                            } else {
-                                temperatureValue.text = "${data.weather.temperature}"
-                            }
-
-                            if (data.weather.feelsLike > 0) {
-                                feelsLikeValue.text = "$equal ${data.weather.feelsLike}"
-                            } else {
-                                feelsLikeValue.text = "${data.weather.feelsLike}"
+                                }
                             }
                         }
-                    }
-                }.start()
+                    }, IntentFilter(KEY_FOR_SERVICE_FOR_DETAILS)
+                )
+
+                requireActivity().startService(
+                    Intent(
+                        requireContext(),
+                        ServiceForDetailsWeather::class.java
+                    ).apply {
+                        putExtra(BUNDLE_WEATHER_KEY, data.weather)
+                    })
             }
         }
     }
