@@ -2,14 +2,11 @@ package com.example.weather.model.service
 
 import android.app.IntentService
 import android.content.Intent
-import android.view.View
-import android.widget.Toast
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.weather.BuildConfig
 import com.example.weather.model.Weather
 import com.example.weather.model.dto.WeatherDTO
 import com.example.weather.utils.*
-import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import java.io.BufferedReader
