@@ -23,15 +23,20 @@ import com.example.weather.viewmodel.DetailsViewModel
 
 
 class DetailsWeatherFragment : Fragment() {
-    private lateinit var binding: FragmentDetailsWeatherBinding
+    private var _binding: FragmentDetailsWeatherBinding? = null
+    private val binding: FragmentDetailsWeatherBinding
+        get() {
+            return _binding!!
+        }
     private lateinit var viewModel: DetailsViewModel
+    private lateinit var receiver: BroadcastReceiver
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentDetailsWeatherBinding.inflate(inflater, container, false)
+        _binding = FragmentDetailsWeatherBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -90,36 +95,37 @@ class DetailsWeatherFragment : Fragment() {
             }
             is AppStateForFavoriteCity.Luck -> {
 
-                LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
-                    object : BroadcastReceiver() {
-                        override fun onReceive(context: Context?, intent: Intent?) {
-                            intent?.let {
-                                it.getParcelableExtra<WeatherDTO>(
-                                    KEY_WEATHER_DTO_FOR_SERVICE_FOR_DETAILS
-                                )?.let { weatherDTO ->
-                                    binding.run {
-                                        progressDetails.visibility = View.GONE
-                                        cityNameDetails.text = data.weather.city.name
-                                        cityCoordinatesDetails.text =
-                                            "${data.weather.city.lat} ${data.weather.city.lon}"
-                                        if (data.weather.temperature > 0) {
-                                            temperatureValue.text = "$equal ${weatherDTO.fact.temp}"
-                                        } else {
-                                            temperatureValue.text = "${weatherDTO.fact.temp}"
-                                        }
-
-                                        if (data.weather.feelsLike > 0) {
-                                            feelsLikeValue.text =
-                                                "$equal ${weatherDTO.fact.feelsLike}"
-                                        } else {
-                                            feelsLikeValue.text = "${weatherDTO.fact.feelsLike}"
-                                        }
+                receiver = object : BroadcastReceiver() {
+                    override fun onReceive(context: Context?, intent: Intent?) {
+                        intent?.let {
+                            it.getParcelableExtra<WeatherDTO>(
+                                KEY_WEATHER_DTO_FOR_SERVICE_FOR_DETAILS
+                            )?.let { weatherDTO ->
+                                binding.run {
+                                    progressDetails.visibility = View.GONE
+                                    cityNameDetails.text = data.weather.city.name
+                                    cityCoordinatesDetails.text =
+                                        "${data.weather.city.lat} ${data.weather.city.lon}"
+                                    if (data.weather.temperature > 0) {
+                                        temperatureValue.text = "$equal ${weatherDTO.fact.temp}"
+                                    } else {
+                                        temperatureValue.text = "${weatherDTO.fact.temp}"
                                     }
 
+                                    if (data.weather.feelsLike > 0) {
+                                        feelsLikeValue.text =
+                                            "$equal ${weatherDTO.fact.feelsLike}"
+                                    } else {
+                                        feelsLikeValue.text = "${weatherDTO.fact.feelsLike}"
+                                    }
                                 }
+
                             }
                         }
-                    }, IntentFilter(KEY_FOR_SERVICE_FOR_DETAILS)
+                    }
+                }
+                LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
+                    receiver, IntentFilter(KEY_FOR_SERVICE_FOR_DETAILS)
                 )
 
                 requireActivity().startService(
@@ -131,5 +137,11 @@ class DetailsWeatherFragment : Fragment() {
                     })
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver)
     }
 }
