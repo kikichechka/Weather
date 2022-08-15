@@ -60,6 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_for_title"
+                android:layout_marginVertical="@dimen/margin_20_dp"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="@dimen/size_city_name_details"
@@ -92,6 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
+                android:layout_marginTop="@dimen/margin_20_dp"
                 android:textSize="@dimen/temperature_value_text_size"
                 app:layout_constraintStart_toStartOf="@id/city_name_details"
                 app:layout_constraintTop_toBottomOf="@id/city_coordinates_details"
@@ -102,7 +104,6 @@
                 android:layout_width="@dimen/size_for_weather_icon"
                 android:layout_height="@dimen/size_for_weather_icon"
                 android:layout_margin="@dimen/margin_for_title"
-                android:background="@drawable/ic_baseline_wb_sunny_24"
                 android:clickable="true"
                 app:layout_constraintStart_toEndOf="@id/temperature_value"
                 app:layout_constraintTop_toTopOf="@id/temperature_value" />
@@ -111,7 +112,6 @@
                 android:id="@+id/state_weather"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/state_sunny"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@id/state_weather_icon"
                 app:layout_constraintTop_toTopOf="@id/state_weather_icon" />

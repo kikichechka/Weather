@@ -27,7 +27,7 @@ class ServiceForDetailsWeather : IntentService("") {
                     myConnection.addRequestProperty(KEY_API, BuildConfig.WEATHER_API_KEY)
                     try {
                         val reader = BufferedReader(InputStreamReader(myConnection.inputStream))
-                        val weatherDTO = Gson().fromJson(getLines(reader), WeatherDTO::class.java)
+                        val weatherDTO = Gson().fromJson((reader), WeatherDTO::class.java)
 
                         LocalBroadcastManager.getInstance(this).sendBroadcast(Intent().apply {
                             putExtra(KEY_WEATHER_DTO_FOR_SERVICE_FOR_DETAILS, weatherDTO)

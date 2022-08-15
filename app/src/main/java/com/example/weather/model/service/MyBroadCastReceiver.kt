@@ -6,6 +6,5 @@ import android.content.Intent
 
 class MyBroadCastReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        TODO("Not yet implemented")
     }
 }

@@ -18,18 +18,18 @@ data class City(
     val lon: Double
 ) : Parcelable
 
-fun defaultCity(): Weather {
+fun favoriteCity(): Weather {
     val defaultList = if (getRussianCities().any { it.like }) getRussianCities() else getWorldCities()
-    var defaultCity = Weather(City("", 0.0, 0.0), 0, 0, true)
+    var favoriteCity = Weather(City("", 0.0, 0.0), 0, 0, true)
     for(data in defaultList) {
-        if (data.like) defaultCity = data
+        if (data.like) favoriteCity = data
     }
-    return defaultCity
+    return favoriteCity
 }
 
-fun clickCity(cityName: String): Weather {
+fun clickCity(lat: Double, lon: Double): City {
     val listAllCities = getRussianCities() + getWorldCities()
-    return listAllCities.single { it.city.name == cityName }
+    return listAllCities.single { it.city.lat == lat && it.city.lon == lon }.city
 }
 
 
